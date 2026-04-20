@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidade SZ | Stumble Guys</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <nav id="navbar">
+            <div class="logo">COMMUNIDADE <span>SZ</span></div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showSection('home')">Início</a></li>
+                <li><a href="#" onclick="showSection('rankings')">Rankings</a></li>
+                <li><a href="#" onclick="showSection('torneios')">Torneios</a></li>
+                <li><a href="#" onclick="showSection('regras')">Regras</a></li>
+                <li><a href="#" onclick="showSection('sobre')">Sobre Nós</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section id="home" class="content-section active">
+            <h1>Trazer o Stumble Guys de Volta!</h1>
+            <p>A SZ nasceu para reviver o competitivo e a diversão do SG.</p>
+            <button class="btn-discord">Entrar no Servidor</button>
+        </section>
+
+        <section id="rankings" class="content-section">
+            <h2>🏆 Rankings Oficiais</h2>
+            <div class="ranking-container">
+                <div class="rank-card">
+                    <h3>Block Dash Endless</h3>
+                    <div id="endless-list">Carregando tempos...</div>
+                </div>
+                <div class="rank-card">
+                    <h3>Simu (Discord)</h3>
+                    <div id="simu-list">Sincronizando com Discord...</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="torneios" class="content-section">
+            <h2>🎮 Próximos Torneios</h2>
+            <div class="torneio-item">
+                <p><strong>Copa SZ de Block Dash</strong> - Inscrições em breve!</p>
+            </div>
+        </section>
+
+        <section id="regras" class="content-section">
+            <h2>📜 Regras da Comunidade</h2>
+            <ul class="regras-lista">
+                <li>Respeito total aos membros e ADMs.</li>
+                <li>Proibido o uso de hacks ou trapaças nos recordes.</li>
+                <li>Divirta-se e ajude a comunidade a crescer!</li>
+            </ul>
+        </section>
+
+        <section id="sobre" class="content-section">
+            <h2>👥 Sobre Nós</h2>
+            <p>Somos um grupo focado em resgatar a essência do Stumble Guys através de eventos, treinos e uma comunidade ativa.</p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
