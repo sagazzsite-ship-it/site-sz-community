@@ -6,7 +6,7 @@
     <title>COMMUNIDADE SZ</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="layout.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -24,124 +24,207 @@
         <section id="inicio" class="content-section">
             <div class="login-container">
                 
-                <div class="login-info-box" id="info-login-box">
-                    <h1>VOCÊ ESTA PRESTES A EMBARCAR UM TREM DE DIVERSÃO</h1>
-                    <p>LOGANDO EM NOSSO SITE VOCÊ TERA BENEFICIOS COMO:</p>
-                    <ul style="list-style: disc; margin-left: 20px; margin-top: 15px;">
-                        <li>PARTICIPAR DE TORNEIOS! PARE DE APENAS VER OS RANKINGS</li>
-                        <li>CONCORRER AO RANKING DE BLOCK DASH ENDLESS!</li>
+                <div class="login-info-box">
+                    <h1>BEM VINDO(A) A COMMUNIDADE SZ</h1>
+                    <p style="margin-bottom: 20px;">VOCÊ ESTA PRESTES A EMBARCAR UM TREM DE DIVERSÃO</p>
+                    
+                    <div class="discord-invite-box">
+                        <p>ENTRE NO NOSSO SERVIDOR OFICIAL</p>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 50px; height: 50px; background: #5865F2; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" width="30" style="filter: brightness(0) invert(1);">
+                            </div>
+                            <div>
+                                <h4 style="margin:0;">SZ COMMUNITY</h4>
+                                <small style="color: #00ff00;">● Online agora</small>
+                            </div>
+                        </div>
+                        <button class="btn-discord" style="margin-top: 15px; background: #5865F2; width: 100%; border-radius: 8px;" onclick="window.open('https://discord.gg/SEU_CONVITE')">ENTRAR NO SERVIDOR</button>
+                    </div>
+
+                    <p style="margin-top: 25px; font-weight: 600;">LOGANDO EM NOSSO SITE VOCÊ TERA BENEFICIOS COMO:</p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                        <li>🏆 PARTICIPAR DE TORNEIOS EXCLUSIVOS!</li>
+                        <li>📊 CONCORRER AO RANKING GLOBAIS!</li>
+                        <li>🎁 SORTEIOS E TAGS ESPECIAIS!</li>
                     </ul>
-                    <p style="margin-top: 20px;">E MAIS QUE VIRAM EM BREVE</p>
                 </div>
 
                 <div class="login-form-box">
-                    <div id="form-cadastro">
-                        <label>NOME DE USUARIO:</label>
-                        <input type="text" id="user-reg">
-                        
-                        <label>SENHA PARA O SITE:</label>
-                        <input type="password" id="pass-reg">
-                        
-                        <button class="btn-discord" onclick="window.location.href='/auth/discord'">
-                            SINCRONIZAR AO DISCORD 
-                            <small>(OPCIONAL POREM TRAS UMA CAMADA AMAIS DE VERIFICAÇÃO)</small>
-                        </button>
-                        
-                        <button class="btn-logar-grande" onclick="realizarCadastro()">LOGAR</button>
-                        
-                        <p style="margin-top:15px; text-align:center;">
-                            JA TEM UMA CONTA? <span class="destaque" style="cursor:pointer" onclick="alternarLogin(true)">ENTRAR</span>
-                        </p>
-                    </div>
-
-                    <div id="form-login" style="display:none;">
-                        <label>NOME DE USUARIO:</label>
-                        <input type="text" id="user-login">
-                        
-                        <label>SENHA PARA O SITE:</label>
-                        <input type="password" id="pass-login">
-                        
-                        <button class="btn-logar-grande" style="font-size: 2.5rem;" onclick="realizarLogin()">ENTRAR</button>
-                        
-                        <p style="margin-top:15px; text-align:center;">
-                            NÃO TEM UMA CONTA? <span class="destaque" style="cursor:pointer" onclick="alternarLogin(false)">CADASTRE</span>
-                        </p>
-                    </div>
+                    <label>NOME DE USUARIO:</label>
+                    <input type="text" id="user-login" placeholder="Ex: JogadorSZ">
+                    
+                    <label>SENHA PARA O SITE:</label>
+                    <input type="password" id="pass-login" placeholder="••••••••">
+                    
+                    <button class="btn-discord" style="background: #2c2f33; border: 1px solid #444; margin-bottom: 20px;">
+                        SINCRONIZAR AO DISCORD (OPCIONAL)
+                    </button>
+                    
+                    <button class="btn-logar-grande" onclick="realizarLogin()">LOGAR</button>
+                    
+                    <p style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: #888;">
+                        AINDA NÃO TEM CONTA? <span class="destaque" style="cursor:pointer" onclick="alternarLogin(false)">CADASTRE-SE AQUI</span>
+                    </p>
                 </div>
 
             </div>
         </section>
-<section id="torneios" class="content-section" style="display:none;">
-            
+        <section id="rankings" class="content-section" style="display:none;">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <h1 class="destaque" style="font-size: 3rem; font-weight: 900;">RANKINGS GLOBAIS</h1>
+                <p style="color: #888;">ACOMPANHE OS MELHORES JOGADORES DA NOSSA COMUNIDADE</p>
+            </div>
+
+            <div class="rankings-grid">
+                <div class="card-ranking">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">🏆</div>
+                    <h3>BLOCK DASH ENDLESS</h3>
+                    <p class="destaque" style="margin-top: 10px; font-weight: bold;">EM BREVE</p>
+                </div>
+                
+                <div class="card-ranking">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">🔥</div>
+                    <h3>SIMU</h3>
+                    <p class="destaque" style="margin-top: 10px; font-weight: bold;">EM BREVE</p>
+                </div>
+
+                <div class="card-ranking">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">⚔️</div>
+                    <h3>TORNEIOS</h3>
+                    <p class="destaque" style="margin-top: 10px; font-weight: bold;">EM BREVE</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="torneios" class="content-section" style="display:none;">
             <div id="box-inscricao-inicial">
-                <div class="torneio-card">
-                    <div class="banner-placeholder"></div>
-                    <h2>PREMIAÇÃO:</h2>
-                    <div class="premio-box"><span>10.000 GEMS + TAG SZ</span></div>
-                    <button class="btn-sz" style="background:#d4af37; margin-top:20px;" onclick="inscreverNoTorneio()">INSCREVER-SE</button>
+                <div class="torneio-container" style="padding: 20px;">
+                    <h1 style="font-weight: 900; font-size: 2.5rem; margin-bottom: 5px;">PREMIAÇÃO:</h1>
+                    <p style="font-size: 1.5rem; font-weight: 600; margin-bottom: 30px;">10.000 GEMS + TAG SZ</p>
+                    
+                    <button class="btn-sz" 
+                            style="background: #eab308; color: #fff; padding: 15px 40px; font-size: 1.2rem; border-radius: 12px; width: fit-content;" 
+                            onclick="inscreverNoTorneio()">
+                        INSCREVER-SE
+                    </button>
                 </div>
             </div>
 
             <div id="painel-aguardando-grupo" style="display:none;">
                 <div class="torneio-layout">
                     <div class="col-left">
-                        <p>VOCÊ ESTA PARTICIPANDO DE:</p>
-                        <div class="mini-card" id="card-torneio-info">
-                            <p style="padding:10px; font-weight:bold;">BLOCK DASH ENDLESS - SZ</p>
+                        <p style="font-weight: 800; font-size: 0.8rem; color: #888;">VOCÊ ESTA PARTICIPANDO DE:</p>
+                        <div class="mini-card" style="padding: 15px; display: flex; align-items: center; justify-content: center; text-align: center;">
+                            <span style="font-weight: 900; font-size: 0.9rem;">BLOCK DASH ENDLESS - SZ</span>
                         </div>
                     </div>
 
                     <div class="col-center">
-                        <h2 class="destaque">RODADA AO VIVO:</h2>
-                        <h1 id="status-rodada-texto">AGUARDE O INICIO DO TORNEIO</h1>
+                        <h2 class="destaque" style="font-size: 1.2rem;">RODADA AO VIVO:</h2>
+                        <h1 id="status-rodada-texto" style="font-size: 2.2rem; font-weight: 900; margin: 20px 0;">AGUARDE O INICIO DO TORNEIO</h1>
                         <div id="area-confronto"></div>
                     </div>
 
                     <div class="col-right">
                         <div class="group-btns" id="botoes-grupo">
-                            <button class="btn-sz" onclick="abrirModal('modal-criar-grupo')">CRIAR GRUPO</button>
+                            <button class="btn-sz" style="margin-bottom: 10px;" onclick="abrirModal('modal-criar-grupo')">CRIAR GRUPO</button>
                             <button class="btn-sz" onclick="abrirModal('modal-entrar-grupo')">ENTRAR EM UM GRUPO</button>
                         </div>
-                        
-                        <div id="info-grupo-criado" style="display:none; text-align:center; border:2px dashed var(--primary); padding:10px; border-radius:15px; margin-bottom:15px;">
-                            <p id="display-nome-grupo" style="font-weight:900;"></p>
-                            <h2 id="display-codigo-grupo" class="destaque"></h2>
+
+                        <div id="info-grupo-criado" style="display:none; background: rgba(168, 85, 247, 0.1); border: 2px dashed var(--primary); padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center;">
+                            <p id="display-nome-grupo" style="font-weight: 900; margin: 0;"></p>
+                            <h2 id="display-codigo-grupo" class="destaque" style="font-size: 2rem; margin: 5px 0;"></h2>
                         </div>
 
-                        <div class="info-torneio-box">
+                        <div style="background: #15151e; padding: 15px; border-radius: 15px; font-size: 0.85rem; line-height: 1.8;">
                             <p>HORA DE INICIO: <span class="destaque">19:30</span></p>
                             <p>MAPA: <span class="destaque">BLOCK DASH</span></p>
                             <p>VERSÃO: <span class="destaque">STUMBLE GUYS</span></p>
                         </div>
-
-                        <button class="btn-sz" style="width:100%; margin-top:10px;" onclick="abrirChaveamento()">VER CHAVEAMENTO</button>
                         
-                        <button id="btn-manager-staff" class="btn-sz" style="display:none; background:#ff0000; margin-top:10px;">MANAGER TUOR</button>
+                        <button class="btn-sz" style="width: 100%; margin-top: 15px; background: #333;" onclick="abrirChaveamento()">VER CHAVEAMENTO</button>
+                        <button id="btn-manager-staff" class="btn-sz" style="display:none; background: #991b1b; width: 100%; margin-top: 10px;" onclick="window.location.href='/manager.html'">MANAGER TUOR</button>
                     </div>
                 </div>
             </div>
         </section>
-
-        <section id="rankings" class="content-section" style="display:none;">
-            <h1 class="destaque">RANKINGS SZ</h1>
-            <p>Em breve o ranking global de Block Dash.</p>
-        </section>
-
         <section id="regras" class="content-section" style="display:none;">
-            <h1 class="destaque">REGRAS DA COMMUNIDADE</h1>
-            <p>1. Respeite os membros.<br>2. Proibido hacks.<br>3. Siga as calls do Staff.</p>
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 class="destaque" style="font-size: 2.5rem; font-weight: 900;">REGRAS DO SERVIDOR</h1>
+            </div>
+
+            <div class="regras-container">
+                <div class="card-regra">
+                    <h3>📁 GERAL</h3>
+                    <ul>
+                        <li>• Respeito é obrigatório entre todos os membros</li>
+                        <li>• Racismo, preconceito, homofobia ou discurso de ódio = <b>PUNIÇÃO</b></li>
+                        <li>• Brigas, tretas e provocações não são permitidas</li>
+                        <li>• Linguagem ofensiva excessiva será punida</li>
+                        <li>• Permanecer no servidor significa aceitar todas as regras</li>
+                    </ul>
+                </div>
+
+                <div class="card-regra">
+                    <h3>💬 TEXTOS</h3>
+                    <ul>
+                        <li>• Use cada canal para sua finalidade</li>
+                        <li>• Spam e flood não são permitidos</li>
+                        <li>• <b>CAPS LOCK É PERMITIDO</b></li>
+                        <li>• Divulgação sem autorização da staff é proibida</li>
+                        <li>• Memes apenas nos canais corretos</li>
+                    </ul>
+                </div>
+
+                <div class="card-regra">
+                    <h3>🎤 CANAIS DE VOZ</h3>
+                    <ul>
+                        <li>• Respeito é obrigatório nos voice</li>
+                        <li>• Proibido gritar ou causar poluição sonora</li>
+                        <li>• Soundboard com moderação</li>
+                        <li>• Música apenas em canal próprio</li>
+                        <li>• Siga as orientações da staff</li>
+                    </ul>
+                </div>
+
+                <div class="card-regra">
+                    <h3>⚔️ X-CLÃ & X-TREINO</h3>
+                    <ul>
+                        <li>• Apenas membros autorizados participam</li>
+                        <li>• Respeito entre clãs é obrigatório</li>
+                        <li>• Fair Play sempre</li>
+                        <li>• Não atrapalhar treinos em andamento</li>
+                        <li>• Seguir instruções do líder ou staff</li>
+                    </ul>
+                </div>
+
+                <div class="card-regra" style="border-color: #ef4444;">
+                    <h3 style="color: #ef4444;">🛡️ STAFF & PUNIÇÕES</h3>
+                    <ul>
+                        <li>• Respeite a staff</li>
+                        <li>• Fingir ser staff = punição grave</li>
+                        <li>• Punições: Advertência, Mute, Kick e Ban</li>
+                        <li>• A staff pode agir para manter a ordem</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
         <section id="sobre" class="content-section" style="display:none;">
-            <h1 class="destaque">SOBRE A SZ</h1>
-            <p>A maior comunidade de torneios rápidos e organizados.</p>
+            <div class="dev-container">
+                <div class="dev-box">
+                    <h1 class="destaque" style="font-size: 3rem; font-weight: 900;">EM DESENVOLVIMENTO</h1>
+                    <p style="color: #888; font-size: 1.2rem;">ESTAMOS PREPARANDO ALGO ÉPICO PARA VOCÊ.</p>
+                </div>
+            </div>
         </section>
     </main>
 
     <div id="modal-criar-grupo" class="modal">
         <div class="modal-content">
             <h3>ESCREVA O NOME DO GRUPO (MAXIMO 5 LETRAS)</h3>
-            <input type="text" id="input-nome-grupo" maxlength="5" placeholder="NOME">
+            <input type="text" id="input-nome-grupo" maxlength="5" placeholder="NOME" style="text-align: center; font-weight: 900;">
             <button class="btn-confirmar" onclick="confirmarCriarGrupo()">ENVIAR</button>
         </div>
     </div>
