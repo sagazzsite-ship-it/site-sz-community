@@ -1,7 +1,6 @@
 {
-  "name": "site-sz",
+  "name": "site-sz-community",
   "version": "1.0.0",
-  "description": "Comunidade SZ - Stumble Guys",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -9,6 +8,11 @@
   "dependencies": {
     "express": "^4.19.2",
     "mongoose": "^8.3.2",
+    "discord.js": "^14.15.2",
+    "socket.io": "^4.7.5",
+    "passport": "^0.7.0",
+    "passport-discord": "^0.1.4",
+    "express-session": "^1.18.0",
     "dotenv": "^16.4.5"
   }
 }
