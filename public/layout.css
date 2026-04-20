@@ -1,0 +1,169 @@
+/* CONTAINER DE LOGIN (IMAGEM 1 e 4) */
+.login-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.login-info-box {
+    background: var(--bg-card);
+    border: 4px solid var(--primary);
+    border-radius: 30px;
+    padding: 40px;
+    width: 100%;
+    max-width: 650px;
+    min-height: 450px;
+}
+
+.login-info-box h1 {
+    font-size: 2.2rem;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.login-form-box {
+    background: var(--bg-card);
+    border: 8px solid #1a1a2e; /* Borda grossa escura da imagem */
+    border-radius: 35px;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.login-form-box label {
+    display: block;
+    font-weight: 800;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.login-form-box input {
+    width: 100%;
+    background: #000;
+    border: 3px solid var(--primary);
+    border-radius: 15px;
+    padding: 15px;
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+/* BOTÕES ESPECÍFICOS */
+.btn-discord {
+    background: #5865F2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    border-radius: 15px;
+    padding: 12px;
+    border: none;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.btn-logar-grande {
+    background: #fff;
+    color: var(--primary);
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 3rem;
+    font-weight: 900;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* TELA DE TORNEIO (ESTADO ATIVO) */
+.torneio-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1.2fr;
+    gap: 20px;
+}
+
+.mini-card {
+    background: var(--bg-card);
+    border: 3px solid var(--primary);
+    border-radius: 20px;
+    height: 150px;
+}
+
+.col-center {
+    text-align: center;
+    border: 3px solid var(--primary);
+    border-radius: 25px;
+    padding: 30px;
+}
+
+.group-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* MODAIS (IMAGEM 11 e 12) */
+.modal {
+    display: none; /* Controlado pelo JS */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border: 5px solid var(--primary);
+    border-radius: 30px;
+    padding: 40px;
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.btn-confirmar {
+    background: var(--primary);
+    color: white;
+    font-size: 2rem;
+    font-weight: 900;
+    padding: 15px 40px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+/* INPUT DE CÓDIGO (6 QUADRADOS - IMAGEM 13) */
+.codigo-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.digit-input {
+    width: 50px;
+    height: 70px;
+    background: none;
+    border: 3px solid var(--primary);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 2rem;
+    color: white;
+}
