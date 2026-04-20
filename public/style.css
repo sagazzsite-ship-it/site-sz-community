@@ -1,42 +1,43 @@
+/* CONFIGURAÇÕES GERAIS E CORES */
 :root {
-    --primary: #a855f7;
+    --primary: #a855f7;       /* Roxo Neon */
     --primary-glow: rgba(168, 85, 247, 0.6);
-    --bg-dark: #0d0d12;
-    --bg-card: #15151e;
-    --text: #ffffff;
-    --font-main: 'Poppins', sans-serif;
+    --bg-dark: #0a0a0c;      /* Fundo Quase Preto */
+    --bg-card: #111118;      /* Fundo dos Cards */
+    --text-main: #ffffff;
+    --text-dim: #b9bbbe;
 }
 
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
     background-color: var(--bg-dark);
-    color: var(--text);
-    font-family: var(--font-main);
+    color: var(--text-main);
     overflow-x: hidden;
 }
 
-/* NAVBAR */
+/* NAVBAR (HEADER) */
 header {
+    background: rgba(10, 10, 12, 0.95);
+    border-bottom: 2px solid var(--primary);
+    padding: 20px 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 60px;
-    background: #08080a;
-    border-bottom: 2px solid var(--primary);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .logo {
-    font-weight: 800;
-    font-size: 1.6rem;
-    letter-spacing: 1px;
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: 2px;
 }
 
 .logo span {
@@ -46,68 +47,102 @@ header {
 
 nav {
     display: flex;
-    gap: 15px;
+    gap: 20px;
 }
 
 nav button {
     background: none;
     border: none;
-    color: #999;
+    color: var(--text-dim);
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
     cursor: pointer;
     transition: 0.3s;
-    text-transform: uppercase;
 }
 
 nav button:hover {
     color: var(--primary);
 }
 
-/* RODAPÉ DE NOTAS */
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #000;
-    padding: 12px 30px;
-    border-top: 1px solid #222;
-    z-index: 100;
+/* ESTRUTURA PRINCIPAL */
+main {
+    padding: 40px 20px;
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-#nota-rodape {
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: #fff;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-/* UTILITÁRIOS */
 .content-section {
-    padding: 40px 60px 100px 60px;
-    min-height: 80vh;
+    width: 100%;
+    max-width: 1200px;
+    display: none; /* Controlado pelo Script */
 }
 
+/* ESTILIZAÇÃO DE TEXTOS COMUNS */
 .destaque {
     color: var(--primary);
+    text-shadow: 0 0 5px var(--primary-glow);
 }
 
-/* BOTÃO PADRÃO SZ */
+h1, h2, h3 {
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+/* BOTÕES PADRÃO (SZ STYLE) */
 .btn-sz {
     background: var(--primary);
-    color: #fff;
+    color: white;
     border: none;
-    padding: 14px 20px;
-    border-radius: 12px;
+    padding: 12px 25px;
+    border-radius: 8px;
     font-weight: 800;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
     text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .btn-sz:hover {
+    filter: brightness(1.2);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px var(--primary-glow);
+}
+
+/* RODAPÉ (FOOTER) */
+footer {
+    background: #000;
+    border-top: 1px solid #222;
+    padding: 15px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#nota-rodape {
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--text-main);
+    text-transform: uppercase;
+}
+
+/* SCROLLBAR PERSONALIZADA */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0c;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c084fc;
 }
