@@ -1,65 +1,52 @@
 const socket = io();
-let logado = false;
-let userDados = null;
+let usuarioLogado = false;
+
+function mudarAba(id) {
+    document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+}
 
 function atualizarNota(texto) {
-    const nota = document.getElementById('footer-nota');
-    if (nota) nota.innerText = `NOTA: ${texto}`;
+    document.getElementById('nota-rodape').innerText = `NOTA: ${texto}`;
 }
 
-function mudarAba(abaId) {
-    document.querySelectorAll('.content-section').forEach(section => {
-        section.style.display = 'none';
-    });
-    document.getElementById(abaId).style.display = 'block';
-}
-
-function acaoLogin(e) {
-    e.preventDefault();
-    const nome = document.getElementById('user-input').value;
-    if (nome) {
-        logado = true;
-        userDados = { nome };
-        document.getElementById('login-box').style.display = 'none';
-        document.getElementById('user-profile').style.display = 'block';
-        document.getElementById('display-username').innerText = nome;
-        atualizarNota("VOCE ESTA CONECTADO");
+function fazerLogin() {
+    const user = document.getElementById('user-login').value;
+    if(user) {
+        usuarioLogado = true;
+        alert("Logado com sucesso!");
+        atualizarNota(`LOGADO COMO ${user.toUpperCase()}`);
+        mudarAba('torneios');
     }
 }
 
-function participarTorneio() {
-    if (!logado) {
-        alert("Faca login no Inicio primeiro!");
+function tentarInscrever() {
+    if (!usuarioLogado) {
+        alert("VOCÊ PRECISA ESTAR LOGADO PARA CONCORRER!");
         mudarAba('inicio');
         return;
     }
-    document.getElementById('aba-inscricao').style.display = 'none';
-    document.getElementById('aba-grupo-espera').style.display = 'block';
-    atualizarNota("VOCE SE INSCREVEU. AGUARDE O INICIO.");
-}
-
-function acaoCriarGrupo() {
-    const nomeG = document.getElementById('group-name').value;
-    if (nomeG.length > 0 && nomeG.length <= 5) {
-        const code = Math.random().toString(36).substring(7).toUpperCase();
-        document.getElementById('modal-criacao').style.display = 'none';
-        document.getElementById('group-controls').style.display = 'none';
-        document.getElementById('room-info').style.display = 'block';
-        document.getElementById('room-code').innerText = code;
-        atualizarNota(`GRUPO CRIADO: ${nomeG}. CODIGO: ${code}`);
-    }
+    // Muda para a tela de espera SEM criar grupo automaticamente
+    document.getElementById('tela-inscricao').style.display = 'none';
+    document.getElementById('tela-pos-inscricao').style.display = 'block';
+    atualizarNota("VOCÊ SE INSCREVEU. CRIE UM GRUPO OU ENTRE EM UM.");
 }
 
 function abrirModal(id) {
     document.getElementById(id).style.display = 'flex';
 }
 
-socket.on('torneioLotado', (id) => {
-    document.getElementById('status-live').innerText = "RODADA AO VIVO INICIADA";
-    atualizarNota("O TORNEIO COMECOU!");
-});
+function confirmarCriarGrupo() {
+    const nome = document.getElementById('group-name-input').value;
+    if (nome) {
+        document.getElementById('modal-criar').style.display = 'none';
+        atualizarNota(`SEU GRUPO ${nome.toUpperCase()} FOI CRIADO! ENVIE O CODIGO PARA UM AMIGO`);
+        // Aqui você exibiria o código gerado como na imagem 3
+    }
+}
 
-window.onload = () => {
-    mudarAba('inicio');
-    atualizarNota("BEM VINDO A COMMUNIDADE SZ");
-};
+// Escuta o Bot do Discord (Somente o Bot inicia o torneio)
+socket.on('torneio_iniciado', (dados) => {
+    document.getElementById('status-torneio').innerText = "RODADA AO VIVO: USUARIO VS USER";
+    atualizarNota("O TORNEIO COMEÇOU! ENVIE O CODIGO DA SALA NO CHAT");
+});
