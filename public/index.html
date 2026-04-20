@@ -2,60 +2,97 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>SZ COMMUNITY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMMUNIDADE SZ</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav>
-        <button onclick="mudarAba('inicio')">INICIO</button>
-        <button onclick="mudarAba('rankings')">RANKINGS</button>
-        <button onclick="mudarAba('torneios')">TORNEIOS</button>
-        <button onclick="mudarAba('regras')">REGRAS</button>
-        <button onclick="mudarAba('sobre')">SOBRE NÓS</button>
-    </nav>
+    <header>
+        <div class="logo">COMMUNIDADE <span>SZ</span></div>
+        <nav>
+            <button onclick="mudarAba('inicio')">Início</button>
+            <button onclick="mudarAba('rankings')">Rankings</button>
+            <button onclick="mudarAba('torneios')">Torneios</button>
+            <button onclick="mudarAba('regras')">Regras</button>
+            <button onclick="mudarAba('sobre')">Sobre Nós</button>
+        </nav>
+    </header>
 
-    <div id="inicio" class="content-section">
-        <div id="login-box">
-            <h2>LOGIN DISCORD</h2>
-            <input type="text" id="user-input" placeholder="Nome de Usuario">
-            <button class="btn-sz" onclick="acaoLogin(event)">LOGAR</button>
-        </div>
-        <div id="user-profile" style="display:none;">
-            <h3>Bem-vindo, <span id="display-username"></span></h3>
-        </div>
-    </div>
-
-    <div id="torneios" class="content-section" style="display:none;">
-        <div id="aba-inscricao">
-            <button class="btn-sz-gold" onclick="participarTorneio()">INSCREVER-SE</button>
-        </div>
-        
-        <div id="aba-grupo-espera" style="display:none;">
-            <h2 id="status-live">AGUARDANDO INICIO</h2>
-            <div id="group-controls">
-                <button onclick="abrirModal('modal-criacao')">CRIAR GRUPO</button>
-                <button onclick="abrirModal('modal-entrar')">ENTRAR EM GRUPO</button>
+    <main>
+        <section id="inicio" class="content-section">
+            <div class="login-container">
+                <div class="login-info-box">
+                    <h1>VOCÊ ESTA PRESTES A EMBARCAR UM TREM DE DIVERSÃO</h1>
+                    <p>LOGANDO EM NOSSO SITE VOCÊ TERA BENEFICIOS COMO:</p>
+                    <ul>
+                        <li>PARTICIPAR DE TORNEIOS! PARE DE APENAS VER OS RANKINGS</li>
+                        <li>CONCORRER AO RANKING DE BLOCK DASH ENDLESS!</li>
+                    </ul>
+                    <p>E MAIS QUE VIRAM EM BREVE</p>
+                </div>
+                <div class="login-form-box">
+                    <label>NOME DE USUARIO:</label>
+                    <input type="text" id="user-login">
+                    <label>SENHA PARA O SITE:</label>
+                    <input type="password" id="pass-login">
+                    <button class="btn-discord">SINCRONIZAR AO DISCORD <img src="discord-icon.png" width="20"></button>
+                    <button class="btn-logar" onclick="fazerLogin()">LOGAR</button>
+                    <p>JA TEM UMA CONTA? <span class="link">ENTRAR</span></p>
+                </div>
             </div>
-            <div id="room-info" style="display:none;">
-                <p id="room-code"></p>
+        </section>
+
+        <section id="torneios" class="content-section" style="display:none;">
+            <div id="tela-inscricao">
+                <div class="torneio-card">
+                    <div class="banner-placeholder"></div>
+                    <h2>PREMIAÇÃO:</h2>
+                    <div class="premio-box"></div>
+                    <button class="btn-inscrever" onclick="tentarInscrever()">INSCREVER-SE</button>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div id="rankings" class="content-section" style="display:none;"><h2>RANKINGS EM BREVE</h2></div>
-    <div id="regras" class="content-section" style="display:none;"><h2>REGRAS DO CLAN</h2></div>
-    <div id="sobre" class="content-section" style="display:none;"><h2>SOBRE A SZ COMMUNITY</h2></div>
+            <div id="tela-pos-inscricao" style="display:none;">
+                <div class="torneio-layout">
+                    <div class="col-left">
+                        <p>VOCÊ ESTA PARTICIPANDO DE:</p>
+                        <div class="mini-card"></div>
+                    </div>
+                    <div class="col-center">
+                        <h2>RODADA AO VIVO:</h2>
+                        <h1 id="status-torneio">AGUARDE O INICIO DO TORNEIO</h1>
+                    </div>
+                    <div class="col-right">
+                        <div class="group-btns">
+                            <button class="btn-sz" onclick="abrirModal('modal-criar')">CRIAR GRUPO</button>
+                            <button class="btn-sz" onclick="abrirModal('modal-entrar')">ENTRAR EM UM GRUPO</button>
+                        </div>
+                        <div class="info-torneio">
+                            <p>HORA DE INICIO: 19:30</p>
+                            <p>MAPA: BLOCK DASH</p>
+                            <p>VERSÃO: STUMBLE GUYS</p>
+                        </div>
+                        <button class="btn-chave">VER CHAVEAMENTO</button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <div id="modal-criacao" class="modal" style="display:none;">
+        <section id="rankings" class="content-section" style="display:none;"><h1>RANKINGS</h1></section>
+        <section id="regras" class="content-section" style="display:none;"><h1>REGRAS</h1></section>
+        <section id="sobre" class="content-section" style="display:none;"><h1>SOBRE NÓS</h1></section>
+    </main>
+
+    <div id="modal-criar" class="modal">
         <div class="modal-content">
-            <p>NOME DO GRUPO (5 LETRAS)</p>
-            <input type="text" id="group-name" maxlength="5">
-            <button onclick="acaoCriarGrupo()">CRIAR</button>
+            <h3>ESCREVA O NOME DO GRUPO (MAXIMO 5 LETRAS)</h3>
+            <input type="text" id="group-name-input" maxlength="5">
+            <button class="btn-enviar" onclick="confirmarCriarGrupo()">ENVIAR</button>
         </div>
     </div>
 
     <footer>
-        <p id="footer-nota">NOTA: CARREGANDO...</p>
+        <p id="nota-rodape">NOTA: BEM VINDO A COMMUNIDADE SZ</p>
     </footer>
 
     <script src="/socket.io/socket.io.js"></script>
