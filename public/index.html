@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COMMUNIDADE SZ</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -21,81 +23,51 @@
     <main>
         <section id="inicio" class="content-section">
             <div class="login-container">
-                <div class="login-info-box">
+                
+                <div class="login-info-box" id="info-login-box">
                     <h1>VOCÊ ESTA PRESTES A EMBARCAR UM TREM DE DIVERSÃO</h1>
                     <p>LOGANDO EM NOSSO SITE VOCÊ TERA BENEFICIOS COMO:</p>
-                    <ul>
+                    <ul style="list-style: disc; margin-left: 20px; margin-top: 15px;">
                         <li>PARTICIPAR DE TORNEIOS! PARE DE APENAS VER OS RANKINGS</li>
                         <li>CONCORRER AO RANKING DE BLOCK DASH ENDLESS!</li>
                     </ul>
-                    <p>E MAIS QUE VIRAM EM BREVE</p>
+                    <p style="margin-top: 20px;">E MAIS QUE VIRAM EM BREVE</p>
                 </div>
+
                 <div class="login-form-box">
-                    <label>NOME DE USUARIO:</label>
-                    <input type="text" id="user-login">
-                    <label>SENHA PARA O SITE:</label>
-                    <input type="password" id="pass-login">
-                    <button class="btn-discord">SINCRONIZAR AO DISCORD <img src="discord-icon.png" width="20"></button>
-                    <button class="btn-logar" onclick="fazerLogin()">LOGAR</button>
-                    <p>JA TEM UMA CONTA? <span class="link">ENTRAR</span></p>
+                    <div id="form-cadastro">
+                        <label>NOME DE USUARIO:</label>
+                        <input type="text" id="user-reg">
+                        
+                        <label>SENHA PARA O SITE:</label>
+                        <input type="password" id="pass-reg">
+                        
+                        <button class="btn-discord" onclick="window.location.href='/auth/discord'">
+                            SINCRONIZAR AO DISCORD 
+                            <small>(OPCIONAL POREM TRAS UMA CAMADA AMAIS DE VERIFICAÇÃO)</small>
+                        </button>
+                        
+                        <button class="btn-logar-grande" onclick="realizarCadastro()">LOGAR</button>
+                        
+                        <p style="margin-top:15px; text-align:center;">
+                            JA TEM UMA CONTA? <span class="destaque" style="cursor:pointer" onclick="alternarLogin(true)">ENTRAR</span>
+                        </p>
+                    </div>
+
+                    <div id="form-login" style="display:none;">
+                        <label>NOME DE USUARIO:</label>
+                        <input type="text" id="user-login">
+                        
+                        <label>SENHA PARA O SITE:</label>
+                        <input type="password" id="pass-login">
+                        
+                        <button class="btn-logar-grande" style="font-size: 2.5rem;" onclick="realizarLogin()">ENTRAR</button>
+                        
+                        <p style="margin-top:15px; text-align:center;">
+                            NÃO TEM UMA CONTA? <span class="destaque" style="cursor:pointer" onclick="alternarLogin(false)">CADASTRE</span>
+                        </p>
+                    </div>
                 </div>
+
             </div>
         </section>
-
-        <section id="torneios" class="content-section" style="display:none;">
-            <div id="tela-inscricao">
-                <div class="torneio-card">
-                    <div class="banner-placeholder"></div>
-                    <h2>PREMIAÇÃO:</h2>
-                    <div class="premio-box"></div>
-                    <button class="btn-inscrever" onclick="tentarInscrever()">INSCREVER-SE</button>
-                </div>
-            </div>
-
-            <div id="tela-pos-inscricao" style="display:none;">
-                <div class="torneio-layout">
-                    <div class="col-left">
-                        <p>VOCÊ ESTA PARTICIPANDO DE:</p>
-                        <div class="mini-card"></div>
-                    </div>
-                    <div class="col-center">
-                        <h2>RODADA AO VIVO:</h2>
-                        <h1 id="status-torneio">AGUARDE O INICIO DO TORNEIO</h1>
-                    </div>
-                    <div class="col-right">
-                        <div class="group-btns">
-                            <button class="btn-sz" onclick="abrirModal('modal-criar')">CRIAR GRUPO</button>
-                            <button class="btn-sz" onclick="abrirModal('modal-entrar')">ENTRAR EM UM GRUPO</button>
-                        </div>
-                        <div class="info-torneio">
-                            <p>HORA DE INICIO: 19:30</p>
-                            <p>MAPA: BLOCK DASH</p>
-                            <p>VERSÃO: STUMBLE GUYS</p>
-                        </div>
-                        <button class="btn-chave">VER CHAVEAMENTO</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="rankings" class="content-section" style="display:none;"><h1>RANKINGS</h1></section>
-        <section id="regras" class="content-section" style="display:none;"><h1>REGRAS</h1></section>
-        <section id="sobre" class="content-section" style="display:none;"><h1>SOBRE NÓS</h1></section>
-    </main>
-
-    <div id="modal-criar" class="modal">
-        <div class="modal-content">
-            <h3>ESCREVA O NOME DO GRUPO (MAXIMO 5 LETRAS)</h3>
-            <input type="text" id="group-name-input" maxlength="5">
-            <button class="btn-enviar" onclick="confirmarCriarGrupo()">ENVIAR</button>
-        </div>
-    </div>
-
-    <footer>
-        <p id="nota-rodape">NOTA: BEM VINDO A COMMUNIDADE SZ</p>
-    </footer>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
