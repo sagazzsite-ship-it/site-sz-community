@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Manager Tuor | Staff SZ</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .chat-monitor { background: #1a0b2e; border: 2px solid #a855f7; height: 400px; overflow-y: scroll; padding: 20px; }
+        .staff-btn { background: #7c3aed; color: white; border: none; padding: 10px; cursor: pointer; margin: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MANAGER TOURNAMENT</h1>
+        <div id="confrontos-lista">
+            <button class="staff-btn" onclick="openChat('T1vsT2')">CHAT TIME 1 VS TIME 2</button>
+        </div>
+
+        <div id="chat-window" style="display:none;">
+            <h2 id="chat-title">Monitorando Chat</h2>
+            <div class="chat-monitor" id="messages"></div>
+            <button class="staff-btn" style="background: green;">PASSAR TIME 1</button>
+            <button class="staff-btn" style="background: blue;">PASSAR TIME 2</button>
+            <button class="staff-btn" style="background: red;" onclick="closeAndClean()">SAIR E LIMPAR</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        let currentRoom = "";
+
+        function openChat(room) {
+            currentRoom = room;
+            document.getElementById('chat-window').style.display = 'block';
+            socket.emit('join-room', room);
+        }
+
+        socket.on('new-msg', (data) => {
+            const div = document.getElementById('messages');
+            div.innerHTML += `<p><strong>${data.user}:</strong> ${data.msg}</p>`;
+        });
+
+        async function closeAndClean() {
+            // Chama a API que você criou no server.js para deletar do Mongo
+            await fetch('/api/finalizar-confronto', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ confrontoId: currentRoom })
+            });
+            location.reload();
+        }
+    </script>
+</body>
+</html>
