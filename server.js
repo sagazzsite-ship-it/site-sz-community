@@ -6,36 +6,40 @@ const passport = require('passport');
 const DiscordStrategy = require('passport-discord').Strategy;
 const http = require('http');
 const { Server } = require('socket.io');
-const { Client, GatewayIntentBits, SlashCommandBuilder, Routes } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-const CARGO_DONO_ID = '1477827180594462741';
+// --- CONFIGURAÇÕES FIXAS ---
+const ID_CARGO_DONO = '1477827180594462741';
+const PORT = process.env.PORT || 10000;
 
-mongoose.connect(process.env.MONGO_URI);
+// --- CONEXÃO MONGODB ---
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('✅ MongoDB Conectado'))
+    .catch(err => console.error('❌ Erro Mongo:', err));
 
 const TorneioSchema = new mongoose.Schema({
-    id_torneio: String,
+    id_aleatorio: String,
     nome: String,
-    capa: String,
+    vagas: Number,
     premiacao: String,
-    vagas_max: { type: Number, default: 32 },
-    inscritos: Array,
-    status: { type: String, default: 'INSCRICOES' }, // INSCRICOES, ANDAMENTO, FINALIZADO
-    vencedor: String
+    status: { type: String, default: 'ABERTO' }, // ABERTO, EM_ANDAMENTO, FINALIZADO
+    inscritos: Array
 });
 
 const ChatSchema = new mongoose.Schema({
     torneioId: String,
     confrontoId: String,
-    mensagens: [{ user: String, msg: String, timestamp: { type: Date, default: Date.now } }]
+    mensagens: [{ user: String, msg: String, time: { type: Date, default: Date.now } }]
 });
 
 const Torneio = mongoose.model('Torneio', TorneioSchema);
 const Chat = mongoose.model('Chat', ChatSchema);
 
+// --- ESTRATÉGIA DISCORD ---
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
 
@@ -48,70 +52,89 @@ passport.use(new DiscordStrategy({
     return done(null, profile);
 }));
 
-app.use(session({ secret: 'sz_community_secret', resave: false, saveUninitialized: false }));
+app.use(session({
+    secret: 'sz_secret_key',
+    resave: false,
+    saveUninitialized: false
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
 app.use(express.static('public'));
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
-client.login(process.env.DISCORD_TOKEN);
+// --- BOT DO DISCORD ---
+const client = new Client({ 
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers] 
+});
 
+client.on('ready', () => console.log(`🤖 Bot ${client.user.tag} Online`));
+
+// Comandos de Gerenciamento (Simplificado para o Server)
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.commandName === 'criar') {
-        const count = await Torneio.countDocuments({ status: { $ne: 'FINALIZADO' } });
-        if (count >= 4) return interaction.reply("Limite de 4 torneios simultâneos atingido!");
+        const ativos = await Torneio.countDocuments({ status: { $ne: 'FINALIZADO' } });
+        if (ativos >= 4) return interaction.reply("❌ Limite de 4 torneios atingido!");
 
-        const id = Math.floor(1000000 + Math.random() * 9000000).toString();
-        const novo = new Torneio({
-            id_torneio: id,
+        const idGerado = Math.floor(1000000 + Math.random() * 9000000).toString();
+        const novoTorneio = new Torneio({
+            id_aleatorio: idGerado,
             nome: interaction.options.getString('nome'),
-            capa: interaction.options.getString('capa'),
-            premiacao: interaction.options.getString('premiacao'),
-            vagas_max: 32
+            vagas: interaction.options.getInteger('vagas'),
+            premiacao: interaction.options.getString('premiacao')
         });
-        await novo.save();
-        interaction.reply(`Torneio **${novo.nome}** criado! ID: \`${id}\``);
-        io.emit('atualizar_torneios');
-    }
 
-    if (interaction.commandName === 'tirar') {
-        const id = interaction.options.getString('id');
-        await Torneio.deleteOne({ id_torneio: id });
-        await Chat.deleteMany({ torneioId: id });
-        interaction.reply(`Torneio \`${id}\` removido e dados limpos.`);
-        io.emit('atualizar_torneios');
+        await novoTorneio.save();
+        interaction.reply(`🏆 Torneio criado! ID: \`${idGerado}\``);
+        io.emit('att_torneios');
     }
 });
 
+client.login(process.env.DISCORD_TOKEN);
+
+// --- ROTAS API ---
+
+// Autenticação
 app.get('/auth/discord', passport.authenticate('discord'));
 app.get('/auth/callback', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => {
     res.redirect('/');
 });
 
+// Info do Usuário (O Script.js usa isso para liberar os botões)
 app.get('/api/user', (req, res) => {
-    if (!req.isAuthenticated()) return res.json({ logado: false });
-    const isStaff = req.user.guilds && req.user.guilds.some(g => g.owner || (req.user.member && req.user.member.roles.includes(CARGO_DONO_ID)));
-    res.json({ 
-        logado: true, 
-        user: req.user,
-        isStaff: isStaff 
-    });
+    if (req.isAuthenticated()) {
+        const roles = req.user.member ? req.user.member.roles : [];
+        const isStaff = roles.includes(ID_CARGO_DONO) || req.user.id === 'SEU_ID_PESSOAL';
+        
+        res.json({ 
+            logado: true, 
+            user: req.user,
+            isStaff: isStaff
+        });
+    } else {
+        res.json({ logado: false });
+    }
 });
 
+// Finalizar e Limpar Chat (Auto-exclusão para não encher o Mongo)
 app.post('/api/finalizar-confronto', async (req, res) => {
     const { torneioId, confrontoId } = req.body;
-    // Lógica de limpeza: remove o chat do banco para não encher
-    await Chat.deleteMany({ torneioId, confrontoId });
-    res.json({ success: true });
+    try {
+        await Chat.deleteMany({ torneioId, confrontoId });
+        res.json({ success: true, message: "Banco limpo." });
+    } catch (err) {
+        res.status(500).json({ error: "Erro ao limpar." });
+    }
 });
 
+// --- SOCKET.IO (Chat e Realtime) ---
 io.on('connection', (socket) => {
     socket.on('join_confronto', (roomId) => socket.join(roomId));
 
     socket.on('send_msg', async (data) => {
+        // Salva temporário
         await Chat.updateOne(
             { confrontoId: data.roomId },
             { $push: { mensagens: { user: data.user, msg: data.msg } } },
@@ -121,6 +144,4 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(process.env.PORT || 10000, () => {
-    console.log('Servidor SZ Community Online');
-});
+server.listen(PORT, () => console.log(`🚀 SZ Community rodando na porta ${PORT}`));
