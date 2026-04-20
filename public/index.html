@@ -96,58 +96,86 @@
             </div>
         </section>
 
-        <section id="torneios" class="content-section" style="display:none;">
-            <div id="box-inscricao-inicial">
-                <div class="torneio-container" style="padding: 20px;">
-                    <h1 style="font-weight: 900; font-size: 2.5rem; margin-bottom: 5px;">PREMIAÇÃO:</h1>
-                    <p style="font-size: 1.5rem; font-weight: 600; margin-bottom: 30px;">10.000 GEMS + TAG SZ</p>
-                    
-                    <button class="btn-sz" 
-                            style="background: #eab308; color: #fff; padding: 15px 40px; font-size: 1.2rem; border-radius: 12px; width: fit-content;" 
-                            onclick="inscreverNoTorneio()">
-                        INSCREVER-SE
-                    </button>
+<section id="torneios" class="content-section" style="display:none;">
+    
+    <div id="tela-inscricao">
+        <h2 style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: var(--primary);">|</span> 🎮 Torneios
+        </h2>
+        <div class="aviso-topo" style="background: rgba(168, 85, 247, 0.1); border: 1px solid var(--primary); padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center;">
+            HÁ UM TORNEIO ATIVO!🏆 PARA PARTICIPAR CLIQUE EM <span class="destaque">INSCREVER-SE</span>
+        </div>
+
+        <div class="card-torneio-principal" style="width: 250px; border: 3px solid var(--primary); border-radius: 25px; padding: 20px; background: var(--bg-card);">
+            <div style="width: 100%; height: 120px; background: var(--primary); border-radius: 15px; margin-bottom: 15px;"></div>
+            <h3 style="text-align: center; margin-bottom: 10px;">PREMIAÇÃO:</h3>
+            <div style="width: 100%; height: 50px; background: var(--primary); border-radius: 10px; margin-bottom: 20px;"></div>
+            <button class="btn-sz" style="width: 100%; border-radius: 10px;" onclick="inscreverNoTorneio()">INSCREVER-SE</button>
+        </div>
+    </div>
+
+    <div id="painel-jogador" style="display: none;">
+        <div class="torneio-grid-layout" style="display: grid; grid-template-columns: 250px 1fr 1fr; gap: 20px;">
+            
+            <div class="col-status">
+                <h3 style="font-size: 0.9rem; margin-bottom: 20px;">VOCÊ ESTA PARTICIPANDO DE:</h3>
+                <div class="card-torneio-mini" style="border: 3px solid var(--primary); border-radius: 25px; padding: 15px; background: var(--bg-card);">
+                    <div style="width: 100%; height: 80px; background: var(--primary); border-radius: 15px; margin-bottom: 10px;"></div>
+                    <p style="font-size: 0.7rem; text-align: center; font-weight: bold;">PREMIAÇÃO:</p>
+                    <div style="width: 100%; height: 35px; background: var(--primary); border-radius: 10px;"></div>
                 </div>
             </div>
 
-            <div id="painel-aguardando-grupo" style="display:none;">
-                <div class="torneio-layout">
-                    <div class="col-left">
-                        <p style="font-weight: 800; font-size: 0.8rem; color: #888;">VOCÊ ESTA PARTICIPANDO DE:</p>
-                        <div class="mini-card" style="padding: 15px; display: flex; align-items: center; justify-content: center; text-align: center;">
-                            <span style="font-weight: 900; font-size: 0.9rem;">BLOCK DASH ENDLESS - SZ</span>
-                        </div>
+            <div class="col-versus" style="border: 3px solid var(--primary); border-radius: 25px; padding: 20px; background: var(--bg-card); min-height: 400px;">
+                <h2 style="margin-bottom: 20px;">RODADA AO VIVO:</h2>
+                <div id="lista-confrontos">
+                    <h1 id="status-geral-torneio" class="destaque" style="font-size: 1.8rem;">AGUARDE O INICIO DO TORNEIO</h1>
                     </div>
+            </div>
 
-                    <div class="col-center">
-                        <h2 class="destaque" style="font-size: 1.2rem;">RODADA AO VIVO:</h2>
-                        <h1 id="status-rodada-texto" style="font-size: 2.2rem; font-weight: 900; margin: 20px 0;">AGUARDE O INICIO DO TORNEIO</h1>
-                        <div id="area-confronto"></div>
-                    </div>
+            <div class="col-acoes">
+                <div id="acoes-grupo-inicial" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn-sz" style="flex: 1;" onclick="abrirModal('modal-criar-grupo')">CRIAR GRUPO</button>
+                    <button class="btn-sz" style="flex: 1;" onclick="abrirModal('modal-entrar-grupo')">ENTRAR EM UM GRUPO</button>
+                </div>
 
-                    <div class="col-right">
-                        <div class="group-btns" id="botoes-grupo">
-                            <button class="btn-sz" style="margin-bottom: 10px;" onclick="abrirModal('modal-criar-grupo')">CRIAR GRUPO</button>
-                            <button class="btn-sz" onclick="abrirModal('modal-entrar-grupo')">ENTRAR EM UM GRUPO</button>
-                        </div>
-
-                        <div id="info-grupo-criado" style="display:none; background: rgba(168, 85, 247, 0.1); border: 2px dashed var(--primary); padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center;">
-                            <p id="display-nome-grupo" style="font-weight: 900; margin: 0;"></p>
-                            <h2 id="display-codigo-grupo" class="destaque" style="font-size: 2rem; margin: 5px 0;"></h2>
-                        </div>
-
-                        <div style="background: #15151e; padding: 15px; border-radius: 15px; font-size: 0.85rem; line-height: 1.8;">
-                            <p>HORA DE INICIO: <span class="destaque">19:30</span></p>
-                            <p>MAPA: <span class="destaque">BLOCK DASH</span></p>
-                            <p>VERSÃO: <span class="destaque">STUMBLE GUYS</span></p>
-                        </div>
-                        
-                        <button class="btn-sz" style="width: 100%; margin-top: 15px; background: #333;" onclick="abrirChaveamento()">VER CHAVEAMENTO</button>
-                        <button id="btn-manager-staff" class="btn-sz" style="display:none; background: #991b1b; width: 100%; margin-top: 10px;" onclick="window.location.href='/manager.html'">MANAGER TUOR</button>
+                <div id="acoes-grupo-ativo" style="display: none; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn-sz" style="flex: 1; font-size: 0.7rem;">RENOMEIE O GRUPO</button>
+                    <button class="btn-sz" style="flex: 1; font-size: 0.7rem; background: #500;">SAIR DO GRUPO</button>
+                    <div style="flex: 1; background: var(--primary); border-radius: 10px; padding: 5px; text-align: center;">
+                        <small>CODIGO:</small><br><b id="cod-grupo-display">XXXXXX</b>
                     </div>
                 </div>
+
+                <div class="info-card-detalhes" style="border: 3px solid var(--primary); border-radius: 25px; padding: 20px; background: var(--bg-card);">
+                    <p style="font-size: 1.5rem; font-weight: 900; margin-bottom: 10px;">HORA DE INICIO: <span style="margin-left: 20px;">19:30</span></p>
+                    <p style="font-size: 1.5rem; font-weight: 900; margin-bottom: 10px;">MAPA: BLOCK DASH</p>
+                    <p style="font-size: 1.5rem; font-weight: 900;">VERSÃO: STUMBLE GUYS</p>
+                </div>
+
+                <button class="btn-sz" style="width: 100%; margin-top: 20px; border-radius: 50px; font-size: 1.5rem;" onclick="mostrarChaveamento()">VER CHAVEAMENTO</button>
+
+                <button id="btn-abrir-chat" class="btn-sz" style="display: none; width: 100%; margin-top: 20px; border-radius: 50px; font-size: 1.5rem;" onclick="abrirPainelChat()">CHAT</button>
             </div>
-        </section>
+        </div>
+    </div>
+
+    <div id="tela-chaveamento" style="display: none; border: 3px solid var(--primary); border-radius: 25px; padding: 30px; position: relative;">
+        <button class="btn-sz" style="position: absolute; top: 20px; right: 20px;" onclick="voltarParaPainel()">SAIR</button>
+        <h1 style="text-align: center; font-size: 2.5rem;">CHAVEAMENTO</h1>
+        <div id="chaveamento-grafico" style="margin-top: 40px;">
+            </div>
+    </div>
+
+    <div id="tela-vitoria" style="display: none; text-align: center; padding: 50px;">
+        <div style="border: 3px solid var(--primary); border-radius: 25px; padding: 40px; display: inline-block;">
+            <h1 style="font-size: 3rem;">PARABENS VOCÊ VENCEU O TORNEIO👑</h1>
+        </div>
+        <br><br>
+        <button class="btn-sz" style="font-size: 2rem; padding: 20px 60px;" onclick="voltarParaPainel()">FECHAR</button>
+    </div>
+
+</section>
         <section id="regras" class="content-section" style="display:none;">
             <div style="text-align: center; margin-bottom: 40px;">
                 <h1 class="destaque" style="font-size: 2.5rem; font-weight: 900;">REGRAS DO SERVIDOR</h1>
