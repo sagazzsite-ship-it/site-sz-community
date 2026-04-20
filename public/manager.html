@@ -2,54 +2,153 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Manager Tuor | Staff SZ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MANAGER TUOR - SZ</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="layout.css">
     <style>
-        .chat-monitor { background: #1a0b2e; border: 2px solid #a855f7; height: 400px; overflow-y: scroll; padding: 20px; }
-        .staff-btn { background: #7c3aed; color: white; border: none; padding: 10px; cursor: pointer; margin: 5px; }
+        .manager-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .slot-card {
+            background: var(--bg-card);
+            border: 3px solid var(--primary);
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+        }
+        .slot-ativo { border-color: #00ff00; }
+        .slot-vazio { border-style: dashed; opacity: 0.6; }
+        
+        .badge-id {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>MANAGER TOURNAMENT</h1>
-        <div id="confrontos-lista">
-            <button class="staff-btn" onclick="openChat('T1vsT2')">CHAT TIME 1 VS TIME 2</button>
-        </div>
+    <header>
+        <div class="logo">SZ <span>MANAGER</span></div>
+        <nav>
+            <button onclick="window.location.href='/'">VOLTAR AO SITE</button>
+        </nav>
+    </header>
 
-        <div id="chat-window" style="display:none;">
-            <h2 id="chat-title">Monitorando Chat</h2>
-            <div class="chat-monitor" id="messages"></div>
-            <button class="staff-btn" style="background: green;">PASSAR TIME 1</button>
-            <button class="staff-btn" style="background: blue;">PASSAR TIME 2</button>
-            <button class="staff-btn" style="background: red;" onclick="closeAndClean()">SAIR E LIMPAR</button>
+    <main class="content-section">
+        <h1 class="destaque">PAINEL DE CONTROLE DE TORNEIOS</h1>
+        <p>GERENCIE OS 4 SLOTS DISPONÍVEIS NO BANCO DE DADOS</p>
+
+        <div class="manager-grid" id="manager-slots">
+            <div class="slot-card" id="slot-0">
+                <h3>SLOT 1: VAZIO</h3>
+                <p>Aguardando criação via Discord...</p>
+            </div>
+            <div class="slot-card" id="slot-1">
+                <h3>SLOT 2: VAZIO</h3>
+            </div>
+            <div class="slot-card" id="slot-2">
+                <h3>SLOT 3: VAZIO</h3>
+            </div>
+            <div class="slot-card" id="slot-3">
+                <h3>SLOT 4: VAZIO</h3>
+            </div>
         </div>
-    </div>
+        <div style="margin-top: 40px; padding: 20px; background: #1a1a2e; border-radius: 15px;">
+            <h3>AÇÕES GLOBAIS</h3>
+            <button class="btn-sz" style="background: #ff4444;" onclick="limparTodosOsChats()">LIMPAR TODOS OS CHATS (BANCO)</button>
+        </div>
+    </main>
+
+    <footer>
+        <p id="nota-rodape">MODO STAFF ATIVO - GERENCIE COM CUIDADO</p>
+    </footer>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-        let currentRoom = "";
 
-        function openChat(room) {
-            currentRoom = room;
-            document.getElementById('chat-window').style.display = 'block';
-            socket.emit('join-room', room);
+        // BUSCA OS TORNEIOS DO BANCO E PREENCHE OS SLOTS
+        async function atualizarPainel() {
+            try {
+                const res = await fetch('/api/torneios-ativos'); // Você precisará dessa rota no server.js
+                const torneios = await res.json();
+
+                for (let i = 0; i < 4; i++) {
+                    const slot = document.getElementById(`slot-${i}`);
+                    const t = torneios[i];
+
+                    if (t) {
+                        slot.className = "slot-card slot-ativo";
+                        slot.innerHTML = `
+                            <span class="badge-id">ID: ${t.id_aleatorio}</span>
+                            <h3>${t.nome.toUpperCase()}</h3>
+                            <p>VAGAS: ${t.inscritos.length} / ${t.vagas}</p>
+                            <p>STATUS: <span class="destaque">${t.status}</span></p>
+                            <div style="margin-top:15px; display:flex; gap:10px;">
+                                <button onclick="forcarInicio('${t.id_aleatorio}')" style="font-size:0.7rem; padding:5px;">INICIAR</button>
+                                <button onclick="limparChat('${t.id_aleatorio}')" style="font-size:0.7rem; padding:5px; background:orange;">LIMPAR CHAT</button>
+                            </div>
+                        `;
+                    } else {
+                        slot.className = "slot-card slot-vazio";
+                        slot.innerHTML = `<h3>SLOT ${i + 1}: VAZIO</h3><p>Disponível para criação.</p>`;
+                    }
+                }
+            } catch (err) {
+                console.error("Erro ao carregar slots:", err);
+            }
         }
 
-        socket.on('new-msg', (data) => {
-            const div = document.getElementById('messages');
-            div.innerHTML += `<p><strong>${data.user}:</strong> ${data.msg}</p>`;
-        });
+        async function forcarInicio(id) {
+            if(confirm("Deseja iniciar o torneio agora?")) {
+                socket.emit('forcar_inicio_torneio', { id });
+                alert("Comando enviado!");
+                atualizarPainel();
+            }
+        }
 
-        async function closeAndClean() {
-            // Chama a API que você criou no server.js para deletar do Mongo
-            await fetch('/api/finalizar-confronto', {
+        async function limparChat(id) {
+            const res = await fetch('/api/finalizar-confronto', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ confrontoId: currentRoom })
+                body: JSON.stringify({ torneioId: id })
             });
-            location.reload();
+            const data = await res.json();
+            if(data.success) alert("Mensagens do torneio " + id + " apagadas do banco!");
         }
+
+        async function limparTodosOsChats() {
+            if(confirm("Isso apagará TODAS as mensagens de todos os chats. Confirmar?")) {
+                // Rota de segurança para não travar o Atlas
+                await fetch('/api/limpar-banco-geral', { method: 'POST' });
+                alert("Banco de dados de mensagens limpo!");
+            }
+        }
+
+        // ATUALIZA AUTOMATICAMENTE QUANDO O BOT MUDA ALGO
+        socket.on('att_torneios', () => {
+            atualizarPainel();
+        });
+
+        // CHECA SE É MESMO STAFF AO ENTRAR
+        window.onload = async () => {
+            const res = await fetch('/api/user');
+            const data = await res.json();
+            if (!data.isStaff) {
+                alert("ACESSO NEGADO: APENAS STAFF");
+                window.location.href = "/";
+            } else {
+                atualizarPainel();
+            }
+        };
     </script>
 </body>
 </html>
