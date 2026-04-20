@@ -5,14 +5,13 @@
   "scripts": {
     "start": "node server.js"
   },
-  "dependencies": {
-    "express": "^4.19.2",
-    "mongoose": "^8.3.2",
-    "discord.js": "^14.15.2",
-    "socket.io": "^4.7.5",
-    "passport": "^0.7.0",
-    "passport-discord": "^0.1.4",
-    "express-session": "^1.18.0",
-    "dotenv": "^16.4.5"
-  }
+"dependencies": {
+  "express": "^4.x.x",
+  "mongoose": "^8.x.x",
+  "socket.io": "^4.x.x",
+  "bcryptjs": "^2.x.x",
+  "dotenv": "^16.x.x",
+  "express-session": "^1.x.x",
+  "passport": "^0.x.x",
+  "passport-discord": "^0.x.x"
 }
