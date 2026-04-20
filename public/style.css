@@ -1,218 +1,168 @@
-/* Importando uma fonte moderna do Google */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
-
 :root {
-    /* Paleta de Cores Roxo Escuro */
-    --bg-deep: #0f051a;        /* Fundo principal */
-    --bg-card: #1a0b2e;        /* Fundo dos cards e seções */
-    --primary: #a855f7;        /* Roxo vibrante (Neon) */
-    --primary-glow: #7c3aed;   /* Roxo secundário para brilho */
-    --accent: #d8b4fe;         /* Roxo claro para textos secundários */
-    --text-white: #f3f4f6;
-    --text-dim: #9ca3af;
-    --glass: rgba(26, 11, 46, 0.8);
-    --border: rgba(168, 85, 247, 0.2);
+    --primary: #a855f7;
+    --primary-glow: #7c3aed;
+    --bg: #0d041a;
+    --card-bg: #1a0b2e;
+    --text: #ffffff;
+    --accent: #bc6ff1;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    background-color: var(--bg-deep);
-    color: var(--text-white);
+    background-color: var(--bg);
+    color: var(--text);
     font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
 }
 
-/* --- BARRA DE NAVEGAÇÃO --- */
-#navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 8%;
-    background: var(--glass);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    position: fixed;
+/* NAVBAR */
+header { background: #07020d; padding: 20px 50px; border-bottom: 2px solid var(--primary); }
+#navbar { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; }
+.logo span { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+.nav-links { display: flex; list-style: none; gap: 25px; }
+.nav-links a { color: white; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+.nav-links a:hover { color: var(--primary); }
+
+/* SEÇÕES */
+.container { padding: 40px; max-width: 1200px; margin: 0 auto; }
+.aviso-ativo {
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid var(--primary);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+.destaque { color: var(--primary); text-shadow: 0 0 5px var(--primary); }
+
+/* CARDS E BOTÕES */
+.card-inscricao {
+    background: var(--card-bg);
+    border: 3px solid var(--primary);
+    border-radius: 30px;
+    width: 280px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: inset 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
+.banner-placeholder {
+    background: var(--primary);
+    height: 150px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+
+.box-premio {
+    background: var(--primary);
+    padding: 15px;
+    border-radius: 15px;
+    margin: 15px 0;
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: black;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 15px;
+    font-weight: 800;
+    cursor: pointer;
     width: 100%;
-    top: 0;
+    transition: 0.3s;
+}
+
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(168, 85, 247, 0.4); }
+
+/* PAINEL DE JOGO (IMAGEM 2) */
+.game-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    background: var(--bg);
+    width: 100%;
+}
+
+.status-box {
+    background: var(--card-bg);
+    border: 2px solid var(--primary);
+    border-radius: 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    padding: 20px;
+}
+
+.info-box {
+    background: var(--card-bg);
+    border: 2px solid var(--primary);
+    padding: 20px;
+    border-radius: 20px;
+    margin: 15px 0;
+}
+.info-box p { font-weight: 800; font-size: 1.1rem; margin: 10px 0; }
+.val { color: var(--primary); margin-left: 10px; }
+
+/* MODAIS (IMAGEM 4/5) */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: flex; align-items: center; justify-content: center;
     z-index: 1000;
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.logo span {
-    color: var(--primary);
-    text-shadow: 0 0 10px var(--primary-glow);
-}
-
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--text-white);
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: 0.3s;
-    cursor: pointer;
-    opacity: 0.8;
-}
-
-.nav-links a:hover {
-    color: var(--primary);
-    opacity: 1;
-    text-shadow: 0 0 8px var(--primary-glow);
-}
-
-/* --- CONTAINER PRINCIPAL --- */
-.container {
-    padding: 120px 8% 60px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* --- SEÇÕES (ABAS) --- */
-.content-section {
-    display: none; /* Escondido por padrão */
-    width: 100%;
-    max-width: 1100px;
-    animation: fadeIn 0.5s ease-out forwards;
-}
-
-.content-section.active {
-    display: block; /* Mostra apenas a aba ativa */
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- TÍTULOS --- */
-h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-h2 {
-    font-size: 1.8rem;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-h2::before {
-    content: '';
-    width: 6px;
-    height: 30px;
+.modal-content {
     background: var(--primary);
+    padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 0 10px var(--primary-glow);
+    width: 500px;
+    text-align: center;
+    color: black;
 }
 
-/* --- CARDS E RANKINGS --- */
-.ranking-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 25px;
-}
-
-.rank-card {
-    background: var(--bg-card);
-    padding: 30px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-    transition: 0.3s;
-}
-
-.rank-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-5px);
-}
-
-/* --- TABELAS --- */
-.rank-table {
+.modal-content h2 { font-weight: 800; margin-bottom: 20px; }
+.modal-content input {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-.rank-table th {
-    text-align: left;
-    color: var(--accent);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--border);
-}
-
-.rank-table td {
-    padding: 15px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    font-size: 0.95rem;
-}
-
-.pos-1 { color: #ffd700; font-weight: bold; } /* Ouro */
-.pos-2 { color: #c0c0c0; font-weight: bold; } /* Prata */
-.pos-3 { color: #cd7f32; font-weight: bold; } /* Bronze */
-
-/* --- BOTÕES --- */
-.btn-discord {
-    background: linear-gradient(135deg, var(--primary-glow), var(--primary));
-    color: white;
-    padding: 15px 35px;
+    padding: 20px;
+    background: #0d041a;
     border: none;
-    border-radius: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: 0.3s;
-    box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.btn-discord:hover {
-    filter: brightness(1.1);
-    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5);
-    transform: scale(1.03);
-}
-
-/* --- LISTAS DE REGRAS E SOBRE --- */
-.regras-lista {
-    list-style: none;
-    text-align: left;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-.regras-lista li {
-    background: var(--bg-card);
-    margin-bottom: 12px;
-    padding: 15px 20px;
+.btn-enviar {
+    background: #4c1d95;
+    color: white;
+    padding: 15px 40px;
+    border: none;
     border-radius: 10px;
-    border-left: 3px solid var(--primary);
+    font-weight: 800;
+    cursor: pointer;
 }
 
-/* --- RESPONSIVIDADE --- */
-@media (max-width: 768px) {
-    .nav-links { display: none; }
-    h1 { font-size: 2rem; }
-    .container { padding-top: 100px; }
+/* CHAVEAMENTO (IMAGEM 9) */
+.overlay {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: var(--bg);
+    z-index: 2000;
+    padding: 50px;
+}
+
+.brackets {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
 }
