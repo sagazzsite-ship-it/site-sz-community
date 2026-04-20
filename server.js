@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -12,19 +13,16 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// CONFIGURAÇÃO DO BANCO DE DATAS (MongoDB)
-// Substitua pela sua URL do MongoDB Atlas
-const MONGO_URI = "sua_mongodb_uri_aqui"; 
-mongoose.connect(MONGO_URI)
-    .then(() => console.log("DB COMMUNIDADE SZ: CONECTADO"))
-    .catch(err => console.error("ERRO DB:", err));
+// CONEXÃO COM MONGODB VIA ENV
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("DB COMMUNIDADE SZ: CONECTADO VIA ENV"))
+    .catch(err => console.error("ERRO CRÍTICO NO BANCO DE DADOS:", err));
 
-// MODELO DE USUÁRIO
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     discordId: { type: String, default: null },
-    role: { type: String, default: 'player' }, // player ou admin
+    role: { type: String, default: 'player' },
     stats: {
         vitorias: { type: Number, default: 0 },
         torneios: { type: Number, default: 0 }
@@ -32,36 +30,38 @@ const UserSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', UserSchema);
 
-// MIDDLEWARES
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({
-    secret: 'sz_secret_key_777',
+    secret: process.env.SESSION_SECRET || 'sz_default_secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }
+    cookie: { 
+        secure: false, // Mude para true se usar HTTPS
+        maxAge: 24 * 60 * 60 * 1000 
+    }
 }));
 
-// CONFIGURAÇÃO PASSPORT (DISCORD)
 passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => {
-    const user = await User.findById(id);
-    done(null, user);
+    try {
+        const user = await User.findById(id);
+        done(null, user);
+    } catch (err) {
+        done(err, null);
+    }
 });
 
 passport.use(new DiscordStrategy({
-    clientID: 'SEU_CLIENT_ID',
-    clientSecret: 'SEU_CLIENT_SECRET',
-    callbackURL: 'http://localhost:3000/auth/discord/callback',
-    scope: ['identify', 'guilds']
+    clientID: process.env.DISCORD_CLIENT_ID,
+    clientSecret: process.env.DISCORD_CLIENT_SECRET,
+    callbackURL: process.env.DISCORD_CALLBACK_URL,
+    scope: ['identify']
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         let user = await User.findOne({ discordId: profile.id });
-        if (!user) {
-            // Se não existe, você pode vincular ou criar um novo
-            // Aqui vamos apenas retornar o perfil para tratar na rota
-        }
         return done(null, user || profile);
     } catch (err) {
         return done(err, null);
@@ -71,31 +71,31 @@ passport.use(new DiscordStrategy({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ROTAS DE AUTENTICAÇÃO (API)
 app.post('/api/register', async (req, res) => {
     try {
         const { username, password } = req.body;
-        const existing = await User.findOne({ username: username.toLowerCase() });
+        const nomeLimpo = username.toLowerCase().trim();
+        const existing = await User.findOne({ username: nomeLimpo });
         
-        if (existing) return res.json({ success: false, message: "USUÁRIO JÁ EXISTE" });
+        if (existing) return res.json({ success: false, message: "ESTE USUÁRIO JÁ EXISTE!" });
 
         const hashed = await bcrypt.hash(password, 10);
         const newUser = new User({
-            username: username.toLowerCase(),
+            username: nomeLimpo,
             password: hashed
         });
 
         await newUser.save();
         res.json({ success: true });
     } catch (err) {
-        res.status(500).json({ success: false, message: "ERRO NO SERVIDOR" });
+        res.status(500).json({ success: false, message: "ERRO AO SALVAR NO BANCO" });
     }
 });
 
 app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ username: username.toLowerCase() });
+        const user = await User.findOne({ username: username.toLowerCase().trim() });
 
         if (!user) return res.json({ success: false, message: "USUÁRIO NÃO ENCONTRADO" });
 
@@ -106,59 +106,55 @@ app.post('/api/login', async (req, res) => {
         req.session.username = user.username;
         res.json({ success: true });
     } catch (err) {
-        res.status(500).json({ success: false, message: "ERRO NO LOGIN" });
+        res.status(500).json({ success: false, message: "ERRO NO PROCESSAMENTO" });
     }
 });
 
 app.get('/api/user', async (req, res) => {
     if (!req.session.userId) return res.json({ logged: false });
     
-    const user = await User.findById(req.session.userId);
-    res.json({
-        logged: true,
-        username: user.username,
-        id: user._id,
-        isStaff: user.role === 'admin'
-    });
+    try {
+        const user = await User.findById(req.session.userId);
+        res.json({
+            logged: true,
+            username: user.username,
+            id: user._id,
+            role: user.role,
+            isStaff: user.role === 'admin'
+        });
+    } catch (err) {
+        res.json({ logged: false });
+    }
 });
 
-app.get('/auth/discord', passport.authenticate('discord'));
-app.get('/auth/discord/callback', passport.authenticate('discord', {
-    failureRedirect: '/'
-}), (req, res) => {
-    res.redirect('/'); // Sucesso na sincronização
-});
-
-// MONITOR DE CONEXÃO
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`--- SISTEMA SZ ONLINE ---`);
-    console.log(`LOCAL: http://localhost:${PORT}`);
+    console.log(`\n=================================`);
+    console.log(`SISTEMA SZ RODANDO NA PORTA ${PORT}`);
+    console.log(`=================================\n`);
 });
-// ARMAZENAMENTO TEMPORÁRIO (EM MEMÓRIA)
 let inscritos = [];
-let grupos = {}; // { 'CODIGO': { nome: 'NOME', membros: [], lider: 'ID' } }
+let grupos = {}; 
 let torneioAtivo = { ativo: true, nome: 'TORNEIO SZ 3V3', premio: '5000 GEMAS' };
 
 io.on('connection', (socket) => {
-    console.log(`NOVA CONEXÃO: ${socket.id}`);
+    console.log(`CONEXÃO SOCKET ATIVA: ${socket.id}`);
 
-    // REGISTRO DE SESSÃO
     socket.on('register_session', (data) => {
         socket.userData = data;
-        console.log(`USUÁRIO ${data.username} SINCRONIZADO NO SOCKET`);
+        socket.join('global_sz');
     });
 
-    // LÓGICA DE INSCRIÇÃO (API + SOCKET)
     app.post('/api/torneio/inscrever', (req, res) => {
-        if (!req.session.userId) return res.json({ success: false, message: "FAÇA LOGIN PRIMEIRO" });
+        if (!req.session.userId) return res.json({ success: false, message: "FAÇA LOGIN" });
         
         const username = req.session.username;
         if (!inscritos.includes(username)) {
             inscritos.push(username);
+            io.emit('log_evento', `${username} se inscreveu no torneio!`);
             res.json({ success: true });
         } else {
-            res.json({ success: false, message: "VOCÊ JÁ ESTÁ INSCRITO" });
+            res.json({ success: false, message: "JÁ INSCRITO" });
         }
     });
 
@@ -167,12 +163,12 @@ io.on('connection', (socket) => {
             ativo: torneioAtivo.ativo,
             nome: torneioAtivo.nome,
             premio: torneioAtivo.premio,
-            inscrito: inscritos.includes(req.session.username)
+            inscrito: req.session.username ? inscritos.includes(req.session.username) : false
         });
     });
 
-    // LÓGICA DE GRUPOS (IMAGENS 2 E 3)
     app.post('/api/grupo/criar', (req, res) => {
+        if (!req.session.userId) return res.json({ success: false });
         const { nome } = req.body;
         const codigo = Math.random().toString(36).substring(2, 8).toUpperCase();
         
@@ -188,67 +184,64 @@ io.on('connection', (socket) => {
 
     app.post('/api/grupo/entrar', (req, res) => {
         const { codigo } = req.body;
-        const grupo = grupos[codigo];
+        const grupo = grupos[codigo.toUpperCase()];
 
         if (grupo && grupo.membros.length < 3) {
-            grupo.membros.push(req.session.username);
-            socket.join(codigo);
+            if (!grupo.membros.includes(req.session.username)) {
+                grupo.membros.push(req.session.username);
+            }
+            socket.join(codigo.toUpperCase());
+            io.to(codigo.toUpperCase()).emit('group_update', grupo);
             res.json({ success: true });
-            io.to(codigo).emit('group_update', grupo);
         } else {
-            res.json({ success: false, message: "GRUPO INVÁLIDO OU LOTADO" });
+            res.json({ success: false, message: "CÓDIGO INVÁLIDO OU GRUPO CHEIO" });
         }
     });
 
-    // CHAT DO TORNEIO (IMAGENS 4 E 5)
     socket.on('send_msg', (data) => {
-        // Envia para todos na sala (ou global se preferir)
         io.emit('receive_msg', {
-            usuario: data.usuario,
+            usuario: data.usuario || "Anônimo",
             texto: data.texto,
             timestamp: new Date().toLocaleTimeString()
         });
     });
 
-    // GESTÃO DE CONFRONTOS (IMAGEM 7 E 8)
-    socket.on('admin_start_round', (confrontos) => {
-        // Recebe os confrontos do Bot/Staff e manda pro site
-        // Exemplo: [{ timeA: ['User1'], timeB: ['User2'] }]
+    socket.on('admin_update_matches', (confrontos) => {
         io.emit('update_matches', confrontos);
     });
 
-    // CHAVEAMENTO (IMAGEM 9)
     socket.on('get_bracket_data', () => {
-        const fakeBracket = {
+        const bracketStatic = {
             rounds: [
                 {
                     matches: [
-                        { p1: 'TIME SZ', p2: 'TIME B', winner: 'TIME SZ' },
-                        { p1: 'TIME C', p2: 'TIME D', winner: 'TIME D' }
+                        { p1: 'TIME SZ', p2: 'TIME ALFA', winner: 'TIME SZ' },
+                        { p1: 'TIME BETA', p2: 'TIME GAMA', winner: 'TIME GAMA' }
                     ]
                 },
                 {
                     matches: [
-                        { p1: 'TIME SZ', p2: 'TIME D', winner: null }
+                        { p1: 'TIME SZ', p2: 'TIME GAMA', winner: null }
                     ]
                 }
             ]
         };
-        socket.emit('update_bracket', fakeBracket);
+        socket.emit('update_bracket', bracketStatic);
     });
 
-    // VITÓRIA FINAL (IMAGEM 10)
-    socket.on('set_winner', (winnerName) => {
+    socket.on('set_winner_global', (winnerName) => {
         io.emit('tournament_winner', { username: winnerName });
     });
 
     socket.on('disconnect', () => {
-        console.log(`CONEXÃO ENCERRADA: ${socket.id}`);
+        console.log(`SOCKET DESCONECTADO: ${socket.id}`);
     });
 });
 
-// ERROR HANDLER PARA EVITAR QUEDAS
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('ERRO INTERNO NO SERVIDOR SZ');
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('ERRO NÃO TRATADO NO SERVER:', err);
 });
