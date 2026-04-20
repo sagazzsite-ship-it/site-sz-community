@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comunidade SZ | Stumble Guys</title>
+    <title>Comunidade SZ | Tournament System</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -16,91 +17,86 @@
                 <li><a href="#" onclick="showSection('rankings')">Rankings</a></li>
                 <li><a href="#" onclick="showSection('torneios')">Torneios</a></li>
                 <li><a href="#" onclick="showSection('regras')">Regras</a></li>
-                <li><a href="#" onclick="showSection('sobre')">Sobre Nós</a></li>
+                <li id="admin-link" style="display:none;"><a href="/manager" class="btn-manager">MANAGER TUOR</a></li>
             </ul>
         </nav>
     </header>
 
     <main class="container">
-        <section id="home" class="content-section active">
-            <h1>JUNTE-SE A COMMUNIDADE</h1>
-            <p>A SZ nasceu para reviver o competitivo e a diversão do Stumble Guys.</p>
-            <button class="btn-discord">Entrar no Servidor</button>
-        </section>
-
-        <section id="rankings" class="content-section">
-            <h2>🏆 Rankings Oficiais</h2>
-            <div class="ranking-container">
-                <div class="rank-card">
-                    <h3>Block Dash Endless</h3>
-                    <div class="status-breve">EM BREVE!</div>
-                </div>
-                <div class="rank-card">
-                    <h3>Simu (Discord)</h3>
-                    <div class="status-breve">EM BREVE!</div>
-                </div>
-            </div>
-        </section>
-
-        <section id="regras" class="content-section">
-            <h2>📜 Regras da Comunidade</h2>
-            <div class="rules-card">
-                <pre class="rules-tree">
-COMMUNIDADE SZ
-├─ GERAL
-│  ├─ Respeito é obrigatório entre todos os membros
-│  ├─ Racismo, preconceito, homofobia ou discurso de ódio = punição
-│  ├─ Brigas, tretas e provocações não são permitidas
-│  ├─ Linguagem ofensiva excessiva será punida
-│  └─ Permanecer no servidor significa aceitar todas as regras
-├─ TEXTOS
-│  ├─ Use cada canal para sua finalidade
-│  ├─ Spam e flood não são permitidos
-│  ├─ CAPS LOCK É PERMITIDO
-│  ├─ Divulgação sem autorização da staff é proibida
-│  └─ Memes apenas nos canais corretos
-├─ CANAIS_DE_VOZ
-│  ├─ Respeito é obrigatório nos voice
-│  ├─ Proibido gritar ou causar poluição sonora
-│  ├─ Soundboard com moderação
-│  ├─ Música apenas em canal próprio
-│  └─ Siga as orientações da staff
-├─ X-CLÃ
-│  ├─ Apenas membros autorizados participam
-│  ├─ Respeito entre clãs é obrigatório
-│  ├─ Provocações excessivas não são permitidas
-│  └─ Fair Play sempre
-├─ X-TREINO
-│  ├─ Não atrapalhar treinos em andamento
-│  ├─ Seguir instruções do líder ou staff
-│  ├─ Comunicação clara durante o treino
-│  └─ Objetivo: evolução do clã
-└─ STAFF_E_PUNIÇÕES
-   ├─ Respeite a staff
-   ├─ Fingir ser staff = punição grave
-   ├─ Punições possíveis:
-   │  ├─ Advertência
-   │  ├─ Mute
-   │  ├─ Kick
-   │  └─ Ban
-   └─ A staff pode agir para manter a ordem
-                </pre>
-            </div>
-        </section>
-
         <section id="torneios" class="content-section">
-            <h2>🎮 Torneios</h2>
-            <div class="rank-card">
-                <p>Nenhum torneio ativo no momento. Fique ligado!</p>
+            <div class="header-torneio">
+                <span class="icon">🎮</span>
+                <h2>Torneios</h2>
             </div>
-        </section>
+            
+            <div class="aviso-ativo">
+                HÁ UM TORNEIO ATIVO! 🏆 PARA PARTICIPAR CLIQUE EM <span class="destaque">INSCREVER-SE</span>
+            </div>
 
-        <section id="sobre" class="content-section">
-            <h2>👥 Sobre Nós</h2>
-            <p>Somos um grupo focado em resgatar a essência do Stumble Guys através de eventos, treinos e uma comunidade ativa.</p>
+            <div class="torneio-grid">
+                <div class="card-inscricao">
+                    <div class="banner-placeholder"></div>
+                    <div class="info-inscricao">
+                        <h3>PREMIAÇÃO:</h3>
+                        <div class="box-premio" id="premio-valor">5000 GEMAS</div>
+                        <button class="btn-primary" onclick="iniciarInscricao()">INSCREVER-SE</button>
+                    </div>
+                </div>
+
+                <div id="game-panel" class="game-panel" style="display:none;">
+                    <div class="col-status">
+                        <h3>VOCÊ ESTÁ PARTICIPANDO DE:</h3>
+                        <div class="mini-card">
+                            <div class="banner-small"></div>
+                            <p>PREMIAÇÃO:</p>
+                            <div class="box-premio-small">5000 GEMAS</div>
+                        </div>
+                    </div>
+
+                    <div class="col-central">
+                        <h3>RODADA AO VIVO:</h3>
+                        <div id="live-status" class="status-box">
+                            AGUARDE O INÍCIO DO TORNEIO
+                        </div>
+                    </div>
+
+                    <div class="col-actions">
+                        <div class="btn-group">
+                            <button class="btn-sec" onclick="openModal('modal-grupo')">CRIAR GRUPO</button>
+                            <button class="btn-sec" onclick="openModal('modal-entrar')">ENTRAR EM UM GRUPO</button>
+                        </div>
+                        
+                        <div class="info-box">
+                            <p>HORA DE INICIO: <span class="val">19:30</span></p>
+                            <p>MAPA: <span class="val">BLOCK DASH</span></p>
+                            <p>VERSÃO: <span class="val">STUMBLE GUYS</span></p>
+                        </div>
+
+                        <button class="btn-chave" onclick="toggleChaveamento()">VER CHAVEAMENTO</button>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
+    <div id="modal-grupo" class="modal">
+        <div class="modal-content">
+            <h2>ESCREVA O NOME DO GRUPO (MAXIMOS 5 LETRAS)</h2>
+            <input type="text" id="group-name-input" maxlength="5">
+            <button class="btn-enviar" onclick="confirmarGrupo()">ENVIAR</button>
+        </div>
+    </div>
+
+    <div id="chaveamento-overlay" class="overlay" style="display:none;">
+        <div class="chaveamento-wrap">
+            <button class="btn-sair" onclick="toggleChaveamento()">SAIR</button>
+            <h1>CHAVEAMENTO</h1>
+            <div class="brackets" id="brackets-draw">
+                </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
