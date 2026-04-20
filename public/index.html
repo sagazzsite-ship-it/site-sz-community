@@ -71,3 +71,101 @@
 
             </div>
         </section>
+<section id="torneios" class="content-section" style="display:none;">
+            
+            <div id="box-inscricao-inicial">
+                <div class="torneio-card">
+                    <div class="banner-placeholder"></div>
+                    <h2>PREMIAÇÃO:</h2>
+                    <div class="premio-box"><span>10.000 GEMS + TAG SZ</span></div>
+                    <button class="btn-sz" style="background:#d4af37; margin-top:20px;" onclick="inscreverNoTorneio()">INSCREVER-SE</button>
+                </div>
+            </div>
+
+            <div id="painel-aguardando-grupo" style="display:none;">
+                <div class="torneio-layout">
+                    <div class="col-left">
+                        <p>VOCÊ ESTA PARTICIPANDO DE:</p>
+                        <div class="mini-card" id="card-torneio-info">
+                            <p style="padding:10px; font-weight:bold;">BLOCK DASH ENDLESS - SZ</p>
+                        </div>
+                    </div>
+
+                    <div class="col-center">
+                        <h2 class="destaque">RODADA AO VIVO:</h2>
+                        <h1 id="status-rodada-texto">AGUARDE O INICIO DO TORNEIO</h1>
+                        <div id="area-confronto"></div>
+                    </div>
+
+                    <div class="col-right">
+                        <div class="group-btns" id="botoes-grupo">
+                            <button class="btn-sz" onclick="abrirModal('modal-criar-grupo')">CRIAR GRUPO</button>
+                            <button class="btn-sz" onclick="abrirModal('modal-entrar-grupo')">ENTRAR EM UM GRUPO</button>
+                        </div>
+                        
+                        <div id="info-grupo-criado" style="display:none; text-align:center; border:2px dashed var(--primary); padding:10px; border-radius:15px; margin-bottom:15px;">
+                            <p id="display-nome-grupo" style="font-weight:900;"></p>
+                            <h2 id="display-codigo-grupo" class="destaque"></h2>
+                        </div>
+
+                        <div class="info-torneio-box">
+                            <p>HORA DE INICIO: <span class="destaque">19:30</span></p>
+                            <p>MAPA: <span class="destaque">BLOCK DASH</span></p>
+                            <p>VERSÃO: <span class="destaque">STUMBLE GUYS</span></p>
+                        </div>
+
+                        <button class="btn-sz" style="width:100%; margin-top:10px;" onclick="abrirChaveamento()">VER CHAVEAMENTO</button>
+                        
+                        <button id="btn-manager-staff" class="btn-sz" style="display:none; background:#ff0000; margin-top:10px;">MANAGER TUOR</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rankings" class="content-section" style="display:none;">
+            <h1 class="destaque">RANKINGS SZ</h1>
+            <p>Em breve o ranking global de Block Dash.</p>
+        </section>
+
+        <section id="regras" class="content-section" style="display:none;">
+            <h1 class="destaque">REGRAS DA COMMUNIDADE</h1>
+            <p>1. Respeite os membros.<br>2. Proibido hacks.<br>3. Siga as calls do Staff.</p>
+        </section>
+
+        <section id="sobre" class="content-section" style="display:none;">
+            <h1 class="destaque">SOBRE A SZ</h1>
+            <p>A maior comunidade de torneios rápidos e organizados.</p>
+        </section>
+    </main>
+
+    <div id="modal-criar-grupo" class="modal">
+        <div class="modal-content">
+            <h3>ESCREVA O NOME DO GRUPO (MAXIMO 5 LETRAS)</h3>
+            <input type="text" id="input-nome-grupo" maxlength="5" placeholder="NOME">
+            <button class="btn-confirmar" onclick="confirmarCriarGrupo()">ENVIAR</button>
+        </div>
+    </div>
+
+    <div id="modal-entrar-grupo" class="modal">
+        <div class="modal-content">
+            <h3>DIGITE O CÓDIGO DO GRUPO</h3>
+            <div class="codigo-container">
+                <input type="text" class="digit-input" maxlength="1">
+                <input type="text" class="digit-input" maxlength="1">
+                <input type="text" class="digit-input" maxlength="1">
+                <input type="text" class="digit-input" maxlength="1">
+                <input type="text" class="digit-input" maxlength="1">
+                <input type="text" class="digit-input" maxlength="1">
+            </div>
+            <button class="btn-confirmar" onclick="confirmarEntrarGrupo()">ENTRAR</button>
+        </div>
+    </div>
+
+    <footer>
+        <p id="nota-rodape">NOTA: BEM VINDO A COMMUNIDADE SZ</p>
+    </footer>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
