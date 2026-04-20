@@ -158,14 +158,28 @@ io.on('connection', (socket) => {
         }
     });
 
-    app.get('/api/torneio/status', (req, res) => {
+    app.get('/api/torneio/status', async (req, res) => {
+    try {
+        // Agora o servidor vai lá no MongoDB buscar o torneio que você criou manualmente
+        const torneioNoBanco = await Torneio.findOne({ ativo: true });
+
+        if (!torneioNoBanco) {
+            // Se você não tiver colocado o JSON no banco ainda, ele retorna isso:
+            return res.json({ ativo: false, message: "NENHUM TORNEIO ENCONTRADO NO BANCO" });
+        }
+
         res.json({
-            ativo: torneioAtivo.ativo,
-            nome: torneioAtivo.nome,
-            premio: torneioAtivo.premio,
+            ativo: true,
+            nome: torneioNoBanco.nome,
+            premio: torneioNoBanco.premio,
+            // Verifica se o usuário logado na sessão está na lista de inscritos (em memória)
             inscrito: req.session.username ? inscritos.includes(req.session.username) : false
         });
-    });
+    } catch (err) {
+        console.error("Erro ao acessar coleção torneios:", err);
+        res.status(500).json({ success: false, message: "ERRO INTERNO NO BANCO DE DADOS" });
+    }
+});
 
     app.post('/api/grupo/criar', (req, res) => {
         if (!req.session.userId) return res.json({ success: false });
