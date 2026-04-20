@@ -1,168 +1,84 @@
-:root {
-    --primary: #a855f7;
-    --primary-glow: #7c3aed;
-    --bg: #0d041a;
-    --card-bg: #1a0b2e;
-    --text: #ffffff;
-    --accent: #bc6ff1;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
-    background-color: var(--bg);
-    color: var(--text);
-    font-family: 'Poppins', sans-serif;
-    overflow-x: hidden;
+    background-color: #0d0d12;
+    color: white;
+    font-family: sans-serif;
+    margin: 0;
 }
 
-/* NAVBAR */
-header { background: #07020d; padding: 20px 50px; border-bottom: 2px solid var(--primary); }
-#navbar { display: flex; justify-content: space-between; align-items: center; }
-.logo { font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; }
-.logo span { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-.nav-links { display: flex; list-style: none; gap: 25px; }
-.nav-links a { color: white; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
-.nav-links a:hover { color: var(--primary); }
-
-/* SEÇÕES */
-.container { padding: 40px; max-width: 1200px; margin: 0 auto; }
-.aviso-ativo {
-    background: rgba(168, 85, 247, 0.1);
-    border: 1px solid var(--primary);
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    margin-bottom: 30px;
-    font-weight: 600;
-}
-.destaque { color: var(--primary); text-shadow: 0 0 5px var(--primary); }
-
-/* CARDS E BOTÕES */
-.card-inscricao {
-    background: var(--card-bg);
-    border: 3px solid var(--primary);
-    border-radius: 30px;
-    width: 280px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: inset 0 0 20px rgba(168, 85, 247, 0.2);
-}
-
-.banner-placeholder {
-    background: var(--primary);
-    height: 150px;
-    border-radius: 20px;
-    margin-bottom: 15px;
-}
-
-.box-premio {
-    background: var(--primary);
-    padding: 15px;
-    border-radius: 15px;
-    margin: 15px 0;
-    font-weight: 800;
-    font-size: 1.2rem;
-}
-
-.btn-primary {
-    background: var(--primary);
-    color: black;
-    border: none;
-    padding: 15px 20px;
-    border-radius: 15px;
-    font-weight: 800;
-    cursor: pointer;
-    width: 100%;
-    transition: 0.3s;
-}
-
-.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(168, 85, 247, 0.4); }
-
-/* PAINEL DE JOGO (IMAGEM 2) */
-.game-panel {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-    background: var(--bg);
-    width: 100%;
-}
-
-.status-box {
-    background: var(--card-bg);
-    border: 2px solid var(--primary);
-    border-radius: 20px;
-    height: 100%;
+header {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 800;
-    padding: 20px;
+    justify-content: space-between;
+    padding: 20px 50px;
+    background: #08080a;
 }
 
-.info-box {
-    background: var(--card-bg);
-    border: 2px solid var(--primary);
-    padding: 20px;
-    border-radius: 20px;
-    margin: 15px 0;
-}
-.info-box p { font-weight: 800; font-size: 1.1rem; margin: 10px 0; }
-.val { color: var(--primary); margin-left: 10px; }
-
-/* MODAIS (IMAGEM 4/5) */
-.modal {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: var(--primary);
-    padding: 40px;
-    border-radius: 10px;
-    width: 500px;
-    text-align: center;
-    color: black;
-}
-
-.modal-content h2 { font-weight: 800; margin-bottom: 20px; }
-.modal-content input {
-    width: 100%;
-    padding: 20px;
-    background: #0d041a;
+nav button {
+    background: none;
     border: none;
-    color: white;
-    font-size: 1.5rem;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.btn-enviar {
-    background: #4c1d95;
-    color: white;
-    padding: 15px 40px;
-    border: none;
-    border-radius: 10px;
-    font-weight: 800;
+    color: #ccc;
+    margin: 0 10px;
     cursor: pointer;
 }
 
-/* CHAVEAMENTO (IMAGEM 9) */
-.overlay {
-    position: fixed;
-    top:0; left:0; width:100%; height:100%;
-    background: var(--bg);
-    z-index: 2000;
+.login-container {
+    display: flex;
+    justify-content: space-around;
     padding: 50px;
 }
 
-.brackets {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 50px;
+.login-info-box, .login-form-box {
+    background: #15151e;
+    padding: 30px;
+    border: 3px solid #a855f7;
+    border-radius: 20px;
+    width: 40%;
+}
+
+input {
+    width: 100%;
+    background: #0d0d12;
+    border: 2px solid #a855f7;
+    color: white;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+}
+
+.btn-logar, .btn-inscrever, .btn-sz, .btn-enviar {
+    background: #a855f7;
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.btn-discord {
+    background: #7289da;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    color: white;
+    margin-bottom: 10px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: black;
+    padding: 10px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    justify-content: center; align-items: center;
 }
